@@ -1,7 +1,7 @@
 package com.optimaize.langdetect;
 
-import com.optimaize.langdetect.cybozu.util.Util;
 import com.google.common.base.Optional;
+import com.optimaize.langdetect.cybozu.util.Util;
 import com.optimaize.langdetect.i18n.LdLocale;
 import com.optimaize.langdetect.ngram.NgramExtractor;
 import org.jetbrains.annotations.NotNull;
@@ -157,8 +157,6 @@ public final class LanguageDetectorImpl implements LanguageDetector {
         }
     }
 
-    /**
-     */
     private double[] detectBlockShortText(Map<String, Integer> ngrams) {
         double[] prob = initProbability();
         double alpha = this.alpha; //TODO I don't understand what this does.
@@ -204,16 +202,11 @@ public final class LanguageDetectorImpl implements LanguageDetector {
      */
     private double[] initProbability() {
         double[] prob = new double[ngramFrequencyData.getLanguageList().size()];
-        if (priorMap != null) {
-            //TODO analyze and optimize this code, looks like double copy.
-            System.arraycopy(priorMap, 0, prob, 0, prob.length);
-            for(int i=0;i<prob.length;++i) prob[i] = priorMap[i];
-        } else {
-            for(int i=0;i<prob.length;++i) prob[i] = 1.0 / ngramFrequencyData.getLanguageList().size();
+        for (int i = 0; i < prob.length; ++i) {
+            prob[i] = 1.0 / ngramFrequencyData.getLanguageList().size();
         }
         return prob;
     }
-
 
     /**
      * update language probabilities with N-gram string(N=1,2,3)
